@@ -1,7 +1,7 @@
 package com.modak.te.notificationservice.model;
 
+import com.modak.te.notificationservice.entity.FrequencyRuleEntity;
 import com.modak.te.notificationservice.service.RulesEnforcer;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class FrequencyRule extends Rule{
     private String messageType;

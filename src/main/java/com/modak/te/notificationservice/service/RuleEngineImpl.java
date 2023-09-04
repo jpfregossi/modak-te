@@ -1,19 +1,19 @@
 package com.modak.te.notificationservice.service;
 
-import com.modak.te.notificationservice.model.FrequencyRuleEntity;
-import com.modak.te.notificationservice.model.RuleMapper;
-import com.modak.te.notificationservice.repository.RulesRepository;
+import com.modak.te.notificationservice.entity.FrequencyRuleEntity;
+import com.modak.te.notificationservice.model.RuleFactoryImpl;
+import com.modak.te.notificationservice.repository.FrequencyRulesRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RuleEngineImpl implements RuleEngine{
-    private final RulesRepository repository;
-    private final RulesEnforcer rulesEnforcer;
-    private final RuleMapper mapper;
+    private final FrequencyRulesRepository repository;
+    private final RuleFactoryImpl mapper;
 
-    public RuleEngineImpl(RulesRepository repository, RulesEnforcer rulesEnforcer, RuleMapper mapper) {
+    public RuleEngineImpl(FrequencyRulesRepository repository, RuleFactoryImpl mapper) {
         this.repository = repository;
-        this.rulesEnforcer = rulesEnforcer;
         this.mapper = mapper;
     }
 
@@ -22,8 +22,7 @@ public class RuleEngineImpl implements RuleEngine{
         List<FrequencyRuleEntity> rules = repository.getByMessageType(messageType);
 
         rules.stream()
-                .map(m -> { System.out.println(m.getMessageType()); return m;})
-                .map(entity -> mapper.from(rulesEnforcer, entity))
+                .map(entity -> mapper.from(entity))
                 .map(r -> r.validate(userId))
                 .toList();
     }

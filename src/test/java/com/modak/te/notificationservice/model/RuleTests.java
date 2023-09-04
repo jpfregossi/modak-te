@@ -1,5 +1,6 @@
 package com.modak.te.notificationservice.model;
 
+import com.modak.te.notificationservice.entity.FrequencyRuleEntity;
 import com.modak.te.notificationservice.service.RedisMessagesBucket;
 import org.junit.jupiter.api.Test;
 

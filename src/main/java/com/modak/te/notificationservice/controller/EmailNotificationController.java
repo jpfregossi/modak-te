@@ -1,7 +1,9 @@
 package com.modak.te.notificationservice.controller;
 
-import com.modak.te.notificationservice.controller.dto.NotificationDTO;
+import com.modak.te.notificationservice.controller.dto.EmailNotificationDTO;
 import com.modak.te.notificationservice.exception.CuotaExcededException;
+import com.modak.te.notificationservice.model.Notification;
+import com.modak.te.notificationservice.model.NotificationMapper;
 import com.modak.te.notificationservice.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,40 +14,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/notifications")
-public class NotificationController {
+@RequestMapping("/api/v1/notifications/email")
+public class EmailNotificationController {
     @Autowired
     NotificationService service;
+    @Autowired
+    NotificationMapper mapper;
     private static String STATUS_MESSAGE = "status";
     private static String NEWS_MESSAGE = "news";
     private static String MARKETING_MESSAGE = "marketing";
 
-    @PostMapping("/email/status")
-    public ResponseEntity<NotificationDTO> sendStatus(@RequestBody NotificationDTO request) {
-        try{
-            service.send(STATUS_MESSAGE, request);
-        } catch (CuotaExcededException e) {
-            return ResponseEntity.badRequest().header("X-Ratelimit-Retry-After", e.getMessage()).build();
-        }
-
-        return new ResponseEntity<>(request, HttpStatus.OK);
+    @PostMapping("/status")
+    public ResponseEntity<EmailNotificationDTO> sendStatus(@RequestBody EmailNotificationDTO request) {
+        return handleRequest(STATUS_MESSAGE, request);
     }
 
-    @PostMapping("/email/news")
-    public ResponseEntity<NotificationDTO> sendNews(@RequestBody NotificationDTO request) {
-        try{
-            service.send(NEWS_MESSAGE, request);
-        } catch (CuotaExcededException e) {
-            return ResponseEntity.badRequest().header("X-Ratelimit-Retry-After", e.getMessage()).build();
-        }
-
-        return new ResponseEntity<>(request, HttpStatus.OK);
+    @PostMapping("/news")
+    public ResponseEntity<EmailNotificationDTO> sendNews(@RequestBody EmailNotificationDTO request) {
+        return handleRequest(NEWS_MESSAGE, request);
     }
 
-    @PostMapping("/email/marketing")
-    public ResponseEntity<NotificationDTO> sendMarketing(@RequestBody NotificationDTO request) {
+    @PostMapping("/marketing")
+    public ResponseEntity<EmailNotificationDTO> sendMarketing(@RequestBody EmailNotificationDTO request) {
+        return handleRequest(MARKETING_MESSAGE, request);
+    }
+
+    private ResponseEntity<EmailNotificationDTO> handleRequest(String type, EmailNotificationDTO request) {
+        Notification notification = mapper.from(request);
         try{
-            service.send(MARKETING_MESSAGE, request);
+            service.process(type, notification);
         } catch (CuotaExcededException e) {
             return ResponseEntity.badRequest().header("X-Ratelimit-Retry-After", e.getMessage()).build();
         }

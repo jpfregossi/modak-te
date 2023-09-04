@@ -1,22 +1,28 @@
 package com.modak.te.notificationservice.model;
 
+import com.modak.te.notificationservice.controller.dto.EmailNotificationDTO;
 import com.modak.te.notificationservice.service.EmailGateway;
 
-import java.util.List;
-
-public abstract class EmailNotification implements Notification{
+public class EmailNotification implements Notification{
     protected EmailGateway gateway;
     protected String recipient;
     protected String body;
     protected String subject;
 
-    public EmailNotification(EmailGateway gateway, String recipient, String body, String subject) {
+    public EmailNotification(EmailGateway gateway, EmailNotificationDTO notification) {
         this.gateway = gateway;
-        this.recipient = recipient;
-        this.body = body;
-        this.subject = subject;
+        this.recipient = notification.getEmail();
+        this.body = notification.getMessage();
+        this.subject = notification.getSubject();
     }
 
     @Override
-    public abstract void send();
+    public void send(){
+        gateway.send(recipient, subject, body);
+    };
+
+    @Override
+    public String getUser(){
+        return this.recipient;
+    };
 }
