@@ -6,7 +6,6 @@ import com.modak.te.notificationservice.repository.FrequencyRulesRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 @Configuration
 public class MongoInitializer {
@@ -37,11 +36,5 @@ public class MongoInitializer {
                 repo.save(rule3);
             }
         };
-    }
-
-    private void createCollections(MongoTemplate mongoTemplate) {
-        if (!mongoTemplate.collectionExists(FrequencyRuleEntity.class)) {
-            mongoTemplate.createCollection(FrequencyRuleEntity.class);
-        }
     }
 }

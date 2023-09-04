@@ -1,14 +1,12 @@
 package com.modak.te.notificationservice.service;
 
 import com.modak.te.notificationservice.config.TestRedisConfiguration;
-import com.modak.te.notificationservice.exception.CuotaExcededException;
+import com.modak.te.notificationservice.exception.QuotaExcededException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,9 +36,9 @@ public class RedisMessagesBucketTests {
         Thread.sleep(5000);
         bucket.validate("status_frequency_846975", 2, 10000);
 
-        Exception exception = assertThrows(CuotaExcededException.class, () -> bucket.validate("status_frequency_846975", 2, 1000));
+        Exception exception = assertThrows(QuotaExcededException.class, () -> bucket.validate("status_frequency_846975", 2, 1000));
 
-        assertEquals("Cuota exceded. Please wait at least 5 seconds.", exception.getMessage());
+        assertEquals("Quota exceded. Please wait at least 5 seconds.", exception.getMessage());
     }
 
 

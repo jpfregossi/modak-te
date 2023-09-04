@@ -1,6 +1,6 @@
 package com.modak.te.notificationservice.service;
 
-import com.modak.te.notificationservice.exception.CuotaExcededException;
+import com.modak.te.notificationservice.exception.QuotaExcededException;
 import com.modak.te.notificationservice.entity.FrequencyRuleEntity;
 import com.modak.te.notificationservice.model.Rule;
 import com.modak.te.notificationservice.model.RuleFactoryImpl;
@@ -68,8 +68,8 @@ public class RuleEngineImplTests {
         when(mapper.from(ruleDTO2)).thenReturn(rule2);
 
         when(rule.validate("userID")).thenReturn(true);
-        when(rule2.validate("userID")).thenThrow(new CuotaExcededException("Couta exceded."));
+        when(rule2.validate("userID")).thenThrow(new QuotaExcededException("Couta exceded."));
 
-        assertThrows(CuotaExcededException.class, () -> ruleEngine.validateRules("status", "userID"));
+        assertThrows(QuotaExcededException.class, () -> ruleEngine.validateRules("status", "userID"));
     }
 }

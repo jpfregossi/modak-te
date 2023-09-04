@@ -1,6 +1,6 @@
 package com.modak.te.notificationservice.service;
 
-import com.modak.te.notificationservice.exception.CuotaExcededException;
+import com.modak.te.notificationservice.exception.QuotaExcededException;
 import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
@@ -69,6 +69,6 @@ public class RedisMessagesBucket implements RulesEnforcer {
         Long ttl = redis.getExpire(keys.stream().sorted().findFirst().get());
         ttl = ttl == 0 ? 1 : ttl;
 
-        throw new CuotaExcededException("Cuota exceded. Please wait at least " + ttl + " seconds.");
+        throw new QuotaExcededException("Quota exceded. Please wait at least " + ttl + " seconds.");
     }
 }

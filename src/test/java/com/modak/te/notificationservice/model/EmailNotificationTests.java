@@ -1,13 +1,10 @@
 package com.modak.te.notificationservice.model;
 
-import com.modak.te.notificationservice.exception.CuotaExcededException;
+import com.modak.te.notificationservice.controller.dto.EmailNotificationDTO;
 import com.modak.te.notificationservice.service.EmailGateway;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 public class EmailNotificationTests {
@@ -15,13 +12,11 @@ public class EmailNotificationTests {
     @Test
     void shouldCallEmailGatewaySendMethod() {
         EmailGateway gateway = mock(EmailGateway.class);
-        List<Rule> rules = new ArrayList<>();
-        StatusEmailNotification notification = new StatusEmailNotification(
-                gateway,
-                "jpfregossi@gamil.com",
-                "New notification",
-                "Status Notification"
-        );
+        EmailNotificationDTO dto = new EmailNotificationDTO();
+        dto.setEmail("jpfregossi@gamil.com");
+        dto.setSubject("New notification");
+        dto.setMessage("Status Notification");
+        Notification notification = new EmailNotification(gateway, dto);
 
         notification.send();
 
