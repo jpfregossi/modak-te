@@ -1,74 +1,48 @@
 # Modak Technical Exercise
+## Juan Pablo Fregossi
+## Rate-Limited Notification Service
 
-## [Backend] Rate-Limited Notification Service
-### The task
-We have a Notification system that sends out email notifications of various types (supdatesupdate, daily news, project invitations, etc). We need to protect recipients from getting too many emails, either due to system errors or due to abuse, so let's limit the number of emails sent to them by implementing a rate-limited version of NotificationService.
+Modak technical exercise: Rate-Limited Notification Service
+Refere to REQUIREMENTS.md for details
 
-The system must reject requests that are over the limit.
+## Prerequisites
 
-Some sample notification types and rate limit rules, e.g.:
+- Docker and docker compose installed on your machine. If you don't have Docker installed, you can get it from [Docker's official site](https://docs.docker.com/get-docker/).
 
-- Status: not more than 2 per minute for each recipient
+## Running the Application using Docker
 
-- News: not more than 1 per day for each recipient
+1. **Clone the Repository**:
 
-- Marketing: not more than 3 per hour for each recipient
+   ```sh
+   git clone https://github.com/jpfregossi/modak-te.git
+   cd modak-te
 
-Etc. these are just samples, the system might have several rate limit rules!
+2. **Build and run the Docker Images**:
 
-### NOTES:
+   ```sh
+   docker compose up
 
-Your solution will be evaluated on code quality, clarity and development best practices.
+This will create a Docker images named notification-service, mongodb and redis.
 
-Feel free to use the programming language, frameworks, technologies, etc that you feel more comfortable with.
+4. **Access the Application**:
 
-Below you'll find a code snippet that can serve as a guidance of one of the implementation alternatives in Java. Feel free to use it if you find it useful or ignore it otherwise; it is not required to use it at all nor translate this code to your programming language.
+   If running on Linux, use the following `curl` command to make a POST request to the application:
 
+   ```sh
+   curl --location 'http://localhost:8080/api/v1/notifications/email/status' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+        "name": "Juan Pablo",
+        "subject": "mensaje de status",
+        "email": "jpfregossi@gmail.com",
+        "message": "status message"
+        }'
+   ```
+   
+### Tests
+![img.png](img.png)
 
-### Code snippet sample
+### Refernce Diagram
 
-```
-/*
- * Click `Run` to execute the snippet below!
- */
+![diagram.png](diagram.png)
 
-import java.io.*;
-import java.util.*;
-
-
-class Solution {
-    public static void main(String[] args) {
-        NotificationServiceImpl service = new NotificationServiceImpl(new Gateway());
-        service.send("news", "user", "news 1");
-        service.send("news", "user", "news 2");
-        service.send("news", "user", "news 3");
-        service.send("news", "another user", "news 1");
-        service.send("update", "user", "update 1");
-    }
-} 
-
-interface NotificationService {
-    void send(String type, String userId, String message);
-}
-
-class NotificationServiceImpl implements NotificationService {
-    private Gateway gateway;
-
-    public NotificationServiceImpl(Gateway gateway) {
-        this.gateway = gateway;
-    }
-
-    // TASK: IMPLEMENT this
-    @Override
-    public void send(String type, String userId, String message) {
-        throw new RuntimeException("not implemented - fix this");
-    }
-}
-
-class Gateway {
-    /* already implemented */
-    void send(String userId, String message) {
-        System.out.println("sending message to user " + userId);
-    }
-}
-```
