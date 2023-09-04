@@ -24,13 +24,11 @@ public class EmailGatewayImpl implements EmailGateway{
             message.setText(body);
             sender.send(message);
         } catch(Exception e) {
-            log.error("No valid email account has been set yet.");
+            log.info("Simulating to send email: to {} | subject: {} | body: {} [no actual email account configured]",
+                    recipient,
+                    subject,
+                    body
+            );
         }
-
-        log.info("Sending email: to {} | subject: {} | body: {}",
-                recipient,
-                subject,
-                body
-        );
     }
 }

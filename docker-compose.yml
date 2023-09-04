@@ -4,6 +4,9 @@ services:
     build: .
     ports:
       - "8080:8080"
+    environment:
+      - SPRING_REDIS_HOST=redis
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/notificationservice
 
   redis:
     image: "redis:alpine"
@@ -14,6 +17,3 @@ services:
     image: "mongo:latest"
     ports:
       - "27017:27017"
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
