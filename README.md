@@ -38,6 +38,9 @@ This will create a Docker images named notification-service, mongodb and redis.
         "message": "status message"
         }'
    ```
+   
+### Tests
+![img.png](img.png)
 
 ### Refernce Diagram
 
