@@ -1,6 +1,6 @@
 package com.modak.te.notificationservice.repository;
 
-import com.modak.te.notificationservice.model.FrequencyRuleEntity;
+import com.modak.te.notificationservice.entity.FrequencyRuleEntity;
 
 import java.util.List;
 
